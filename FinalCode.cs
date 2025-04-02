@@ -1,6 +1,7 @@
-using System;
+﻿using System;
+using System.Linq;
 
-class Program
+class FinalCode
 {
     static void Main()
     {
@@ -29,7 +30,7 @@ class Program
         }
         Console.WriteLine(); // Print an extra blank line for spacing
 
-        // 2. Calculate and display the average grades per student
+        // 2. Calculate and display the average grades per student (integer division)
         Console.WriteLine("Average Grades per Student:");
         for (int i = 0; i < numStudents; i++)  // Loop through each student
         {
@@ -40,7 +41,7 @@ class Program
                 sum += grades[i, j]; // Add the subject grade to the sum
             }
 
-            double average = (double)sum / numSubjects; // Calculate the average
+            int average = sum / numSubjects; // Use integer division (removes decimals)
             Console.WriteLine($"Student {i + 1}: {average}"); // Display the student's average
         }
         Console.WriteLine(); // Print an extra blank line for spacing
@@ -60,6 +61,43 @@ class Program
             }
 
             Console.WriteLine($"Subject {j + 1}: {highest}"); // Display the highest grade for the subject
+        }
+        Console.WriteLine();
+
+        // 4. Find and display the lowest grade per subject
+        Console.WriteLine("Lowest Grades per Subject:");
+        for (int j = 0; j < numSubjects; j++)  // Loop through each subject
+        {
+            int lowest = grades[0, j]; // Assume the first student's grade is the lowest initially
+
+            for (int i = 1; i < numStudents; i++) // Compare with other students' grades in the same subject
+            {
+                if (grades[i, j] < lowest) // If we find a lower grade, update the lowest value
+                {
+                    lowest = grades[i, j];
+                }
+            }
+
+            Console.WriteLine($"Subject {j + 1}: {lowest}"); // Display the lowest grade for the subject
+        }
+        Console.WriteLine();
+
+        // 5. Find and display the median grade per student
+        Console.WriteLine("Median Grades per Student:");
+        for (int i = 0; i < numStudents; i++)  // Loop through each student
+        {
+            int[] studentGrades = new int[numSubjects]; // Array to store grades of a student
+
+            for (int j = 0; j < numSubjects; j++)  // Extract grades of current student
+            {
+                studentGrades[j] = grades[i, j];
+            }
+
+            Array.Sort(studentGrades); // Sort grades in ascending order
+
+            int median = studentGrades[numSubjects / 2]; // Get middle value (odd count, so exact middle exists)
+
+            Console.WriteLine($"Student {i + 1}: {median}"); // Display median for the student
         }
 
         Console.WriteLine("\nPress any key to close this window...");
